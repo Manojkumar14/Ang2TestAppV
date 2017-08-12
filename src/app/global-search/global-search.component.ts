@@ -32,15 +32,16 @@ export class GlobalSearchComponent implements OnInit {
     this.fieldsArray = [];
     let errMessage: any = [];
     if (myTable != null) {
-      this.globalSearchService.getGlobalSearchData(myTable)
+      this.globalSearchService.getGlobalSearchOptions(myTable)
           .subscribe(
             (globalList) => {
-              this.fieldsArray = Object.keys(globalList[0]);
+              this.fieldsArray = globalList;
             },
             errorMsg => errMessage = <any>errorMsg
           );
     }
     this.displayGrid = false;
+    console.log(this.fieldsArray);
   }
 
   onSearchField(myField) {

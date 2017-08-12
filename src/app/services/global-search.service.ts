@@ -16,6 +16,16 @@ export class GlobalSearchService {
 
   constructor(private http: Http) { }
 
+  getGlobalSearchOptions(searchTable: string) {
+    this.url = '';
+    if (searchTable !== '') {
+      this.url = this.baseUrl + searchTable;
+    }
+    return this.http.options(this.url)
+                    .map(this.extractData)
+                    .catch(this.handleError);
+  }
+
   getGlobalSearchData(searchTable: string, searchField?: string, searchValue?: string): Observable<any> {
     this.url = '';
     if ((searchField === '' && searchValue === '') || searchValue === '' || searchField === '') {
