@@ -1,0 +1,45 @@
+/*table{
+  width: 100%;
+}
+tr {
+  width: 100%;
+  display: inline-table;
+  table-layout: fixed;
+}
+tbody{
+  overflow-y:scroll;
+  height: 200px;
+  width: 87%;
+  position:absolute;
+}*/
+.col-md-1 {
+    width: 12.333333% !important;
+    text-align: -webkit-right !important;
+}
+.grid-style{
+    height: 250px;
+    table-layout: fixed;
+    overflow-y: auto;
+}
+.container{
+    margin-top: 20px;
+}
+h3{
+  margin-bottom: 25px;
+  color:green;
+}
+h4{
+  color:green;
+}
+.row{
+  margin-top: 20px !important;
+  text-align: center !important;
+}
+th{
+  text-align: center;
+  background-color: darkslategrey;
+  color: white;
+}
+td{
+  text-align: left;
+}

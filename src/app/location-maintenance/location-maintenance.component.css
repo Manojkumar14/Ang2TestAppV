@@ -1,0 +1,26 @@
+.grid-style{
+    height: 250px;
+    table-layout: fixed;
+    overflow-y: auto ;
+}
+.container{
+    margin-top: 20px;
+}
+h3{
+  top:5px;
+  bottom:20px;
+  color:green;
+}
+h4{
+  color:green;
+}
+.row{
+  margin-top: 20px !important;
+  text-align: center !important;
+}
+th{
+  text-align: center;
+}
+td{
+  text-align: left;
+}

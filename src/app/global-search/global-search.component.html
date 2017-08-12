@@ -1,0 +1,46 @@
+<div class="row">
+  <h3>Global Search</h3>
+  <div class="col-md-1">Search Form/Table:</div>
+  <div class="col-md-2">
+    <select class="form-control" [(ngModel)]="search.tableValue" (change)="onSearchTable(search.tableValue)">
+      <option value="">Select Table</option>
+      <option *ngFor="let menu of globalMenu" value="{{menu.value}}">{{menu.text}}</option>
+    </select>
+  </div>
+  <div class="col-md-1">Search Field: </div>
+  <div class="col-md-2">
+    <select class="form-control" id="fieldValue" [(ngModel)]="search.fieldValue" (change)="onSearchField(search.fieldValue)">
+      <option value="">Select Field</option>
+      <option *ngFor="let field of fieldsArray" value="{{field}}">{{field}}</option>
+    </select>
+  </div>
+  <div class="col-md-1">Search Value:</div>
+  <div class="col-md-2">
+    <input class="form-control" id="searchValue" [(ngModel)]="search.textValue" required>
+    <span>{{errorMsg}}</span>
+  </div>
+  <div class="col-md-1">
+    <button class="btn btn-primary" (click)="onSubmit(search)">Submit</button>
+  </div>
+</div>
+<div class="container" *ngIf="displayGrid">
+  <div class="row">
+    <h4>{{search.tableValue}}</h4>
+  </div>
+  <div class="row">
+    <div class="grid-style">
+      <table class="table table-bordered table-condensed table-striped">
+        <thead>
+          <tr>
+            <th *ngFor="let field of fieldsArray">{{field}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of dataArray">
+            <td *ngFor="let field of fieldsArray">{{data[field]}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

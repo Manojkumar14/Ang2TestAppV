@@ -1,0 +1,42 @@
+<div class="container-fluid main-container">
+  <!-- Header -->
+  <div class="masthead">
+    <div class="row">
+      <div class="col-sm-11 clearfix">
+        <img class=" pull-left img-responsive img-masthead-brand img_style" alt="VP Demand Creation Services" src="assets/images/K-header-logo.png">
+      </div>
+      <div class="col-sm-1 exitStyle">
+        <button class="btn btn-primary" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="onChange()">Exit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div id="content">
+    <div class="row">
+      <div class="col-sm-3 dropdown_style">
+        <select class="form-control" #selectoption [(ngModel)]="myRoute" (change)="onAnchorClick(myRoute)">
+          <option value="Fin Goods">Fin Goods</option>
+          <option><a value="2">Global Search/Add</a></option>
+          <optgroup label="Process Transaction">
+            <option><a >Web Order Approval</a></option>
+            <option><a >Order Entry Form</a></option>
+            <option><a >Print Trasactions Rpts</a></option>
+            <option><a >Process Backorders</a></option>
+          </optgroup>
+          <option><a >Print Report</a></option>
+          <optgroup label="Administrative Maintaince">
+            <option><a >Co & Weblogin Forms</a></option>
+            <option><a >Location Maint</a></option>
+            <option><a >Item-Product Maint</a></option>
+            <option><a >Promos, Codes & Logo Maint</a></option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="routerStyle" *ngIf="displayRoute">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+.routerStyle{
+  padding-top: 0px;
+}
+.exitStyle{
+  margin-top:20px;
+}
+.img_style{
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  clear: both;
+}
+.dropdown_style{
+  margin-left:100px;
+}
