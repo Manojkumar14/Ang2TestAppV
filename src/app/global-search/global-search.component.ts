@@ -13,6 +13,7 @@ export class GlobalSearchComponent implements OnInit {
   tempArray: any = [];
   fieldsArray: any = [];
   dataArray: any = [];
+  tableTitle: any = '';
   displayGrid = false;
   search: any = {
     'tableValue': '',
@@ -31,17 +32,24 @@ export class GlobalSearchComponent implements OnInit {
     this.search.textValue = '';
     this.fieldsArray = [];
     let errMessage: any = [];
+
+    for (let i = 0; i < this.globalMenu.length; i++) {
+      if (this.globalMenu[i].value === myTable) {
+        this.tableTitle = this.globalMenu[i].text;
+      }
+    }
+
     if (myTable != null) {
       this.globalSearchService.getGlobalSearchOptions(myTable)
           .subscribe(
             (globalList) => {
-              this.fieldsArray = globalList;
+              this.fieldsArray = globalList.fields;
+              console.log(this.fieldsArray);
             },
             errorMsg => errMessage = <any>errorMsg
           );
     }
     this.displayGrid = false;
-    console.log(this.fieldsArray);
   }
 
   onSearchField(myField) {

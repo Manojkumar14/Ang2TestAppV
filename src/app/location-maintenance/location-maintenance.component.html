@@ -1,34 +1,103 @@
-<div class="container">
+<div class="container" *ngIf="hidePanel">
   <h3>Location Maintenance</h3>
   <div class="row">
-      <div class="col-sm-3">
-        Location: &nbsp;
-        <input id="searchValue" [(ngModel)]="search.textValue" required>
-      </div>
-      <div class="col-sm-2">
-          <button (click)="onSubmit(search)">Submit</button>
-      </div>
+    <div class="col-sm-1">
+      <label>Location:</label>
+    </div>
+    <div class="col-sm-3">
+      <input class="form-control" id="searchValue" [(ngModel)]="search.textValue" required>
+    </div>
+    <div class="col-sm-2">
+      <button class="btn btn-primary" (click)="onSearch(search)">Submit</button>
+    </div>
   </div>
-  <div class="container">
-    <button (click)="onSubmit(search)">+Add New</button>
+  <div class="row">
+    <div class="col-sm-1">
+      <button class="btn btn-success" (click)="addNewLocation()">+ Add New</button>
+    </div>
+    <div class="col-sm-4 paraStyle">
+      <p>Check the box beside the row you want to change</p>
+    </div>
+  </div>
+  <div class="container" *ngIf="displayGrid">
+    <div class="panel panel-default">
+      <div class="grid-style">
+        <table class="table table-bordered table-condensed table-striped">
+          <thead>
+            <tr>
+              <th></th>
+              <th *ngFor="let field of fieldsArray">{{field}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of dataArrayCopy">
+              <td><input type="checkbox" id="checkValue" (change)="onChange(data)"></td>
+              <td *ngFor="let field of fieldsArray">{{data[field]}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
-<div class="container" *ngIf="displayGrid">
-    <div class="grid-style">
-      <table class="table table-bordered table-condensed table-striped">
-        <thead>
-          <tr>
-            <th></th>
-            <th *ngFor="let field of fieldsArray">{{field}}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of dataArrayCopy">
-            <td><input type="checkbox" id="checkValue"></td>
-            <td *ngFor="let field of fieldsArray">{{data[field]}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>Check the box beside the row you want to change</p>
+<div class="container" *ngIf="showPanel">
+  <div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading">{{locationTitle}}</div>
+      <div class="panel-body">
+        <form class="form-horizontal" #locationForm="ngForm">
+          <div class="form-group">
+            <label for="location" class="control-label col-md-3">Location: </label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="location" required [(ngModel)]="location.location" name="location">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="direction" class="control-label col-md-3">Direction: </label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="direction" required [(ngModel)]="location.direction" name="direction">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="active" class="control-label col-md-3">Active: </label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="active" required [(ngModel)]="location.active" name="active">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="skidEquivalent" class="control-label col-md-3">Skid Equivalent: </label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="skidEquivalent" required [(ngModel)]="location.skidEquivalent" name="skidEquivalent">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="secure" class="control-label col-md-3">Secure: </label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="secure" required [(ngModel)]="location.secure" name="secure">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="oversized" class="control-label col-md-3">Oversized: </label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="oversized" required [(ngModel)]="location.oversized" name="oversized">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="pickNPack" class="control-label col-md-3">PickNPack: </label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="pickNPack" required [(ngModel)]="location.pickNPack" name="pickNPack">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-4 col-md-1">
+              <button type="button" class="btn btn-primary" [disabled]="!locationForm.form.valid" (click)="addLocation(locationForm.value)">Save</button>
+            </div>
+            <div class="col-md-offset-1 col-md-1">
+              <button class="btn btn-primary" (click)="onCancel()">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

@@ -15,6 +15,7 @@ tbody{
 .col-md-1 {
     width: 12.333333% !important;
     text-align: -webkit-right !important;
+    padding-top: 5px !important;
 }
 .grid-style{
     height: 250px;
@@ -23,6 +24,7 @@ tbody{
 }
 .container{
     margin-top: 20px;
+    text-align: center;
 }
 h3{
   margin-bottom: 25px;
@@ -37,8 +39,8 @@ h4{
 }
 th{
   text-align: center;
-  background-color: darkslategrey;
-  color: white;
+  background-color: #A2A2A2;
+  color: #080000;
 }
 td{
   text-align: left;

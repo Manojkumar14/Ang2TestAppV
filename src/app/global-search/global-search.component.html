@@ -11,12 +11,12 @@
   <div class="col-md-2">
     <select class="form-control" id="fieldValue" [(ngModel)]="search.fieldValue" (change)="onSearchField(search.fieldValue)">
       <option value="">Select Field</option>
-      <option *ngFor="let field of fieldsArray" value="{{field}}">{{field}}</option>
+      <option *ngFor="let field of fieldsArray" value="{{field.name}}">{{field.label}}</option>
     </select>
   </div>
   <div class="col-md-1">Search Value:</div>
   <div class="col-md-2">
-    <input class="form-control" id="searchValue" [(ngModel)]="search.textValue" required>
+    <input class="form-control" id="searchValue" [(ngModel)]="search.textValue" placeholder="Enter text here" required>
     <span>{{errorMsg}}</span>
   </div>
   <div class="col-md-1">
@@ -24,23 +24,19 @@
   </div>
 </div>
 <div class="container" *ngIf="displayGrid">
-  <div class="row">
-    <h4>{{search.tableValue}}</h4>
-  </div>
-  <div class="row">
-    <div class="grid-style">
-      <table class="table table-bordered table-condensed table-striped">
-        <thead>
-          <tr>
-            <th *ngFor="let field of fieldsArray">{{field}}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of dataArray">
-            <td *ngFor="let field of fieldsArray">{{data[field]}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <h4>{{tableTitle}} details</h4>
+  <div class="grid-style">
+    <table class="table table-bordered table-condensed table-striped">
+      <thead>
+        <tr>
+          <th *ngFor="let field of fieldsArray">{{field.label}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of dataArray">
+          <td *ngFor="let field of fieldsArray">{{data[field.name]}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

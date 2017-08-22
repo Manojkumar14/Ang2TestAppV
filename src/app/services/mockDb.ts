@@ -6,7 +6,13 @@ export const GLOBALSEARCHMENU: any = [
     {text: 'Web Logins', value: 'weblogins' }
   ];
 export const LOCATION: any = [
-  {'Location': '05-02-22-02', 'Direction': 'East', 'Active': 'Y', 'Skid Equivalent': 1, 'Secure': 'N', 'Oversized': 'N', 'PickNPack': 'Y'},
-  {'Location': '05-02-22-02A', 'Direction': 'East', 'Active': 'Y', 'Skid Equivalent': 1, 'Secure': 'N', 'Oversized': 'N', 'PickNPack': 'Y'},
-  {'Location': '05-02-22-02B', 'Direction': 'East', 'Active': 'Y', 'Skid Equivalent': 1, 'Secure': 'N', 'Oversized': 'N', 'PickNPack': 'Y'}
+  {'location': '05-02-22-02', 'direction': 'East', 'active': 'Y', 'skidEquivalent': 1, 'secure': 'N', 'oversized': 'N', 'pickNPack': 'Y'},
+  {'location': '05-02-22-02A', 'direction': 'East', 'active': 'Y', 'skidEquivalent': 1, 'secure': 'N', 'oversized': 'N', 'pickNPack': 'Y'},
+  {'location': '05-02-22-02B', 'direction': 'East', 'active': 'Y', 'skidEquivalent': 1, 'secure': 'N', 'oversized': 'N', 'pickNPack': 'Y'},
+  {'location': '06-02-22-02', 'direction': 'East', 'active': 'Y', 'skidEquivalent': 1, 'secure': 'N', 'oversized': 'N', 'pickNPack': 'Y'},
+  {'location': '06-02-22-02A', 'direction': 'East', 'active': 'Y', 'skidEquivalent': 1, 'secure': 'N', 'oversized': 'N', 'pickNPack': 'Y'},
+  {'location': '06-02-22-02B', 'direction': 'East', 'active': 'Y', 'skidEquivalent': 1, 'secure': 'N', 'oversized': 'N', 'pickNPack': 'Y'},
+  {'location': '07-02-21-02', 'direction': 'West', 'active': 'Y', 'skidEquivalent': 1, 'secure': 'N', 'oversized': 'N', 'pickNPack': 'Y'},
+  {'location': '07-02-21-02A', 'direction': 'West', 'active': 'Y', 'skidEquivalent': 1, 'secure': 'N', 'oversized': 'N', 'pickNPack': 'Y'},
+  {'location': '07-02-21-02B', 'direction': 'West', 'active': 'Y', 'skidEquivalent': 1, 'secure': 'N', 'oversized': 'N', 'pickNPack': 'Y'}
 ];

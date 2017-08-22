@@ -21,24 +21,39 @@ export class GlobalSearchService {
     if (searchTable !== '') {
       this.url = this.baseUrl + searchTable;
     }
-    return this.http.options(this.url)
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json')
+    headers.append('Access-Control-Allow-Headers', 'Content-Type');
+    headers.append('Access-Control-Allow-Methods', 'GET');
+    headers.append('Access-Control-Allow-Origin', '*');
+
+    const options = new RequestOptions({ headers: headers });
+    return this.http.options(this.url, options)
                     .map(this.extractData)
                     .catch(this.handleError);
   }
 
   getGlobalSearchData(searchTable: string, searchField?: string, searchValue?: string): Observable<any> {
     this.url = '';
+
+    const requestOptions = {
+      search: new URLSearchParams()
+    };
     if ((searchField === '' && searchValue === '') || searchValue === '' || searchField === '') {
       this.url = this.baseUrl + searchTable;
     }
     if (searchTable !== '' && searchField !== '' && searchValue !== '') {
-      this.url = this.baseUrl + searchTable + '?' + searchField + '=' + searchValue;
+      this.url = this.baseUrl + searchTable;
+      // This tells the API to find records starting with the provided search value. + '?' + searchField + '=' + searchValue
+      requestOptions.search.set(searchField, JSON.stringify({ $like: `${searchValue}%` }));
     }
     console.log(this.url);
-    return this.http.get(this.url)
+
+    return this.http.get(this.url, requestOptions)
                     .map(this.extractData)
                     .catch(this.handleError);
   }
+
   private extractData(response: Response) {
     const body = response.json();
     return body || {};
