@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { GLOBALSEARCHMENU, LOCATION } from '../services/mockDb';
+import { GLOBALSEARCHMENU, LOCATION, REFERENCEBOOLDATA } from '../services/mockDb';
 
 @Injectable()
 export class MockService {
@@ -12,5 +12,8 @@ export class MockService {
   }
   getLocation() {
     return LOCATION;
+  }
+  getRefBoolData() {
+    return REFERENCEBOOLDATA;
   }
 }

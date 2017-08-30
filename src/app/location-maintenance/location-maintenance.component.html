@@ -8,7 +8,7 @@
       <input class="form-control" id="searchValue" [(ngModel)]="search.textValue" required>
     </div>
     <div class="col-sm-2">
-      <button class="btn btn-primary" (click)="onSearch(search)">Submit</button>
+      <button class="btn btn-primary" (click)="getLocationData(search)">Submit</button>
     </div>
   </div>
   <div class="row">
@@ -26,18 +26,19 @@
           <thead>
             <tr>
               <th></th>
-              <th *ngFor="let field of fieldsArray">{{field}}</th>
+              <th *ngFor="let field of fieldsArray">{{field.label}}</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let data of dataArrayCopy">
               <td><input type="checkbox" id="checkValue" (change)="onChange(data)"></td>
-              <td *ngFor="let field of fieldsArray">{{data[field]}}</td>
+              <td *ngFor="let field of fieldsArray">{{data[field.name]}}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
+    <app-pagination [searchData]="search"></app-pagination>
   </div>
 </div>
 <div class="container" *ngIf="showPanel">
@@ -49,50 +50,43 @@
           <div class="form-group">
             <label for="location" class="control-label col-md-3">Location: </label>
             <div class="col-md-6">
-              <input type="text" class="form-control" id="location" required [(ngModel)]="location.location" name="location">
+              <input type="text" class="form-control" id="location" required [(ngModel)]="location.location" name="location" placeholder="01-01-01-01">
             </div>
           </div>
           <div class="form-group">
             <label for="direction" class="control-label col-md-3">Direction: </label>
             <div class="col-md-6">
-              <input type="text" class="form-control" id="direction" required [(ngModel)]="location.direction" name="direction">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="active" class="control-label col-md-3">Active: </label>
-            <div class="col-md-6">
-              <input type="text" class="form-control" id="active" required [(ngModel)]="location.active" name="active">
+              <input type="text" class="form-control" id="direction" required [(ngModel)]="location.direction" name="direction" placeholder="east">
             </div>
           </div>
           <div class="form-group">
             <label for="skidEquivalent" class="control-label col-md-3">Skid Equivalent: </label>
             <div class="col-md-6">
-              <input type="text" class="form-control" id="skidEquivalent" required [(ngModel)]="location.skidEquivalent" name="skidEquivalent">
+              <input type="number" class="form-control" id="skidEquivalent" required [(ngModel)]="location.skidEquivalent" name="skidEquivalent" placeholder="0.25">
             </div>
           </div>
           <div class="form-group">
-            <label for="secure" class="control-label col-md-3">Secure: </label>
-            <div class="col-md-6">
-              <input type="text" class="form-control" id="secure" required [(ngModel)]="location.secure" name="secure">
+            <div class="col-md-offset-3 col-md-1 md-check-style">
+              <input type="checkbox" id="active" [(ngModel)]="location.active" name="active">&nbsp;<b>Active</b>
+            </div>
+            <div class="col-md-1 md-check-style">
+              <input type="checkbox" id="oversized" [(ngModel)]="location.oversized" name="oversized">&nbsp;<b>Oversized</b>
+            </div>
+            <div class="col-md-1 md-check-style">
+              <input type="checkbox" id="secure" [(ngModel)]="location.secure" name="secure">&nbsp;<b>Secure</b>
+            </div>
+            <div class="col-md-1 md-check-style">
+              <input type="checkbox" id="pickNPack" [(ngModel)]="location.pickNPack" name="pickNPack">&nbsp;<b>PickNPack</b>
             </div>
           </div>
           <div class="form-group">
-            <label for="oversized" class="control-label col-md-3">Oversized: </label>
-            <div class="col-md-6">
-              <input type="text" class="form-control" id="oversized" required [(ngModel)]="location.oversized" name="oversized">
+            <div class="col-md-offset-5 col-md-1" *ngIf="displaySaveBtn">
+              <button type="button" class="btn btn-primary" [disabled]="!locationForm.form.valid" (click)="saveLocation(locationForm.value)">Save</button>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="pickNPack" class="control-label col-md-3">PickNPack: </label>
-            <div class="col-md-6">
-              <input type="text" class="form-control" id="pickNPack" required [(ngModel)]="location.pickNPack" name="pickNPack">
+            <div class="col-md-offset-5 col-md-1" *ngIf="displayUpdateBtn">
+              <button type="button" class="btn btn-primary" (click)="updateLocation(locationForm.value)">Update</button>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="col-md-offset-4 col-md-1">
-              <button type="button" class="btn btn-primary" [disabled]="!locationForm.form.valid" (click)="addLocation(locationForm.value)">Save</button>
-            </div>
-            <div class="col-md-offset-1 col-md-1">
+            <div class="col-md-1">
               <button class="btn btn-primary" (click)="onCancel()">Cancel</button>
             </div>
           </div>

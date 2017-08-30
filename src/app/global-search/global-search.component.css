@@ -15,7 +15,9 @@ tbody{
 .col-md-1 {
     width: 12.333333% !important;
     text-align: -webkit-right !important;
-    padding-top: 5px !important;
+}
+.label-style{
+  padding-top: 7px !important;
 }
 .grid-style{
     height: 250px;

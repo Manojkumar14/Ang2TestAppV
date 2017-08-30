@@ -16,29 +16,29 @@ export class GlobalSearchService {
 
   constructor(private http: Http) { }
 
-  getGlobalSearchOptions(searchTable: string) {
+  getGlobalSearchOptions(searchTable: string): Observable<any> {
     this.url = '';
     if (searchTable !== '') {
       this.url = this.baseUrl + searchTable;
     }
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json')
-    headers.append('Access-Control-Allow-Headers', 'Content-Type');
-    headers.append('Access-Control-Allow-Methods', 'GET');
-    headers.append('Access-Control-Allow-Origin', '*');
-
-    const options = new RequestOptions({ headers: headers });
-    return this.http.options(this.url, options)
+    return this.http.options(this.url)
                     .map(this.extractData)
                     .catch(this.handleError);
+    // const headers = new Headers();
+    // headers.append('Content-Type', 'application/json')
+    // headers.append('Access-Control-Allow-Headers', 'Content-Type');
+    // headers.append('Access-Control-Allow-Methods', 'GET');
+    // headers.append('Access-Control-Allow-Origin', '*');
+
+    // const options = new RequestOptions({ headers: headers });
+    // return this.http.options(this.url, options)
   }
 
   getGlobalSearchData(searchTable: string, searchField?: string, searchValue?: string): Observable<any> {
     this.url = '';
-
-    const requestOptions = {
+    const requestOptions = new RequestOptions ({
       search: new URLSearchParams()
-    };
+    });
     if ((searchField === '' && searchValue === '') || searchValue === '' || searchField === '') {
       this.url = this.baseUrl + searchTable;
     }
@@ -48,7 +48,6 @@ export class GlobalSearchService {
       requestOptions.search.set(searchField, JSON.stringify({ $like: `${searchValue}%` }));
     }
     console.log(this.url);
-
     return this.http.get(this.url, requestOptions)
                     .map(this.extractData)
                     .catch(this.handleError);

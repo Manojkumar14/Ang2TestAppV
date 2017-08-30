@@ -1,20 +1,20 @@
 <div class="row">
   <h3>Global Search</h3>
-  <div class="col-md-1">Search Form/Table:</div>
+  <div class="col-md-1 label-style">Search Form/Table:</div>
   <div class="col-md-2">
     <select class="form-control" [(ngModel)]="search.tableValue" (change)="onSearchTable(search.tableValue)">
       <option value="">Select Table</option>
       <option *ngFor="let menu of globalMenu" value="{{menu.value}}">{{menu.text}}</option>
     </select>
   </div>
-  <div class="col-md-1">Search Field: </div>
+  <div class="col-md-1 label-style">Search Field: </div>
   <div class="col-md-2">
     <select class="form-control" id="fieldValue" [(ngModel)]="search.fieldValue" (change)="onSearchField(search.fieldValue)">
       <option value="">Select Field</option>
       <option *ngFor="let field of fieldsArray" value="{{field.name}}">{{field.label}}</option>
     </select>
   </div>
-  <div class="col-md-1">Search Value:</div>
+  <div class="col-md-1 label-style">Search Value:</div>
   <div class="col-md-2">
     <input class="form-control" id="searchValue" [(ngModel)]="search.textValue" placeholder="Enter text here" required>
     <span>{{errorMsg}}</span>

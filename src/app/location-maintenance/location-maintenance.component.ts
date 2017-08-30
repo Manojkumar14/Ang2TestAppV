@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
+import { FormGroup, FormGroupName, FormControl, FormControlName, Validators, NgForm } from '@angular/forms';
 
 import { MockService } from '../services/mock.service';
+import { LocationService } from '../services/location.service';
 
 @Component({
   selector: 'app-location-maintenance',
@@ -17,6 +18,9 @@ export class LocationMaintenanceComponent implements OnInit {
   location: any = {};
   showPanel: any = false;
   hidePanel: any = true;
+  varReadOnly: any = false;
+  displaySaveBtn: any = true;
+  displayUpdateBtn: any = false;
   locationTitle: any = 'Add/Change location';
   errorMsg = '';
   displayGrid = false;
@@ -25,39 +29,44 @@ export class LocationMaintenanceComponent implements OnInit {
     'textValue': ''
   };
 
-
-  constructor(private mockService: MockService) { }
+  constructor(private mockService: MockService, private locationService: LocationService) { }
 
   ngOnInit() {
+    this.getLocationFields();
+    this.displayGrid = true;
+    this.getContentData();
+    this.varReadOnly = false;
     this.getLocationData();
-    this.displayGrid = true;
   }
-  getLocationData() {
-    this.LocationData = this.mockService.getLocation();
-    this.dataArray = this.LocationData;
-    this.dataArrayCopy = this.LocationData;
-    this.fieldsArray = Object.keys(this.LocationData[0]);
+
+  getLocationFields() {
+    let errMessage: any = [];
+    this.locationService.getLocationOptions()
+        .subscribe(
+          (locationFields) => {
+            this.fieldsArray = locationFields.fields;
+          },
+          errorMsg => errMessage = <any>errorMsg
+        );
   }
-  onSearch(mySearch) {
-    this.dataArrayCopy = [];
-    this.errorMsg = '';
-    const fileArray = [];
-    if (mySearch.textValue === '' || mySearch.textValue !== '' ) {
-      for (const data of this.dataArray) {
-        const re = new RegExp(mySearch.textValue, 'gi');
-        // not working for numbers...
-        if (data[mySearch.fieldValue].match(re)) {
-          fileArray.push(data);
-        }
-      }
-      this.dataArrayCopy = fileArray;
-    }
-    this.displayGrid = true;
+  getLocationData(locationSearch?: string) {
+    let errMessage: any = [];
+    this.locationService.getLocationData(locationSearch)
+        .subscribe(
+          (locationData) => {
+            this.dataArray = locationData;
+            this.dataArrayCopy = locationData;
+          },
+          errorMsg => errMessage = <any>errorMsg
+        );
   }
+
   addNewLocation() {
     this.location = {};
     this.showPanel = true;
     this.hidePanel = false;
+    this.displaySaveBtn = true;
+    this.displayUpdateBtn = false;
     this.locationTitle = 'Add New Location';
   }
   onCancel() {
@@ -68,13 +77,50 @@ export class LocationMaintenanceComponent implements OnInit {
     this.location = {};
     this.showPanel = true;
     this.hidePanel = false;
+    this.displaySaveBtn = false;
+    this.displayUpdateBtn = true;
     this.locationTitle = 'Change Location';
     this.location = editData;
+    this.varReadOnly = true;
     console.log(this.location);
   }
-  addLocation(formdata) {
+  saveLocation(formdata) {
+    if (!formdata.active) { formdata.active = false; }
+    if (!formdata.secure) { formdata.secure = false; }
+    if (!formdata.oversized) { formdata.oversized = false; }
+    if (!formdata.pickNPack) { formdata.pickNPack = false; }
     console.log(formdata);
-    this.showPanel = false;
-    this.hidePanel = true;
+    let errMessage: any = [];
+    this.locationService.addLocationData(formdata)
+                        .subscribe(
+                          (savedLocationDetails) => {
+                            console.log(savedLocationDetails);
+                            this.showPanel = false;
+                            this.hidePanel = true;
+                          },
+                          errorMsg => errMessage = <any>errorMsg
+                        );
+  }
+  updateLocation(formdata) {
+    let errMessage: any = [];
+    this.locationService.updateLocationData(formdata)
+                        .subscribe(
+                          (updatedLocationDetails) => {
+                            console.log(updatedLocationDetails);
+                            this.showPanel = false;
+                            this.hidePanel = true;
+                          },
+                          errorMsg => errMessage = <any>errorMsg
+                        );
+  }
+  getContentData() {
+    let errMessage: any = [];
+    this.locationService.getContentRange()
+                        .subscribe(
+                          (contentRange) => {
+                            console.log(contentRange);
+                          },
+                          errorMsg => errMessage = <any>errorMsg
+                        );
   }
 }

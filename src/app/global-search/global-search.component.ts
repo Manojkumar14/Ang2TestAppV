@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { MockService } from '../services/mock.service';
 import { GlobalSearchService } from '../services/global-search.service';
+import { PaginationService } from '../services/pagination/pagination.service';
 
 @Component({
   selector: 'app-global-search',

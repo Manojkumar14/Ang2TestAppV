@@ -14,7 +14,7 @@ export class AppComponent {
   displayRoute: any;
 
   constructor(private router: Router) { }
-  
+
   onChange() {
     this.myRoute = 'Fin Goods';
   }
@@ -28,8 +28,11 @@ export class AppComponent {
         case 'Global Search/Add':
           this.router.navigate(['/globalSearch']);
           break;
-        case 'Location Maint':
+        case 'Location Maintenance':
           this.router.navigate(['/locationMaintenance']);
+          break;
+        default:
+          this.displayRoute = false;
           break;
     }
   }

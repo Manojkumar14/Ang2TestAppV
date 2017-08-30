@@ -16,3 +16,7 @@ export const LOCATION: any = [
   {'location': '07-02-21-02A', 'direction': 'West', 'active': 'Y', 'skidEquivalent': 1, 'secure': 'N', 'oversized': 'N', 'pickNPack': 'Y'},
   {'location': '07-02-21-02B', 'direction': 'West', 'active': 'Y', 'skidEquivalent': 1, 'secure': 'N', 'oversized': 'N', 'pickNPack': 'Y'}
 ];
+export const REFERENCEBOOLDATA: any = [
+  {text: 'True', value: 'true'},
+  {text: 'False', value: 'false'}
+];

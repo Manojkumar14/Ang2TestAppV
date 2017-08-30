@@ -16,21 +16,21 @@
     <div class="row">
       <div class="col-sm-3 dropdown_style">
         <select class="form-control" #selectoption [(ngModel)]="myRoute" (change)="onAnchorClick(myRoute)">
-          <option value="Fin Goods">Fin Goods</option>
-          <option><a value="2">Global Search/Add</a></option>
-          <optgroup label="Process Transaction">
-            <option><a >Web Order Approval</a></option>
-            <option><a >Order Entry Form</a></option>
-            <option><a >Print Trasactions Rpts</a></option>
-            <option><a >Process Backorders</a></option>
-          </optgroup>
-          <option><a >Print Report</a></option>
-          <optgroup label="Administrative Maintaince">
-            <option><a >Co & Weblogin Forms</a></option>
-            <option><a >Location Maint</a></option>
-            <option><a >Item-Product Maint</a></option>
-            <option><a >Promos, Codes & Logo Maint</a></option>
-          </optgroup>
+            <option value="Fin Goods">Fin Goods</option>
+            <option class="optionStyle"><a>Global Search/Add</a></option>
+            <optgroup label="Process Transaction">
+              <option><a>Web Order Approval</a></option>
+              <option><a>Order Entry Form</a></option>
+              <option><a>Print Trasactions Rpts</a></option>
+              <option><a>Process Backorders</a></option>
+            </optgroup>
+            <option class="optionStyle"><a>Print Report</a></option>
+            <optgroup label="Administrative Maintenance">
+              <option><a>Co & Weblogin Forms</a></option>
+              <option><a>Location Maintenance</a></option>
+              <option><a>Item-Product Maintenance</a></option>
+              <option><a>Promos, Codes & Logo Maintenance</a></option>
+            </optgroup>
         </select>
       </div>
     </div>
