@@ -2,3 +2,9 @@
   margin-top: -25px;
   text-align: left;
 }
+.anchorStyle{
+  text-decoration: none;
+}
+a:focus, a:hover {
+  text-decoration: none !important;
+}

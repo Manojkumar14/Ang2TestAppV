@@ -8,7 +8,7 @@
       <input class="form-control" id="searchValue" [(ngModel)]="search.textValue" required>
     </div>
     <div class="col-sm-2">
-      <button class="btn btn-primary" (click)="getLocationData(search)">Submit</button>
+      <button class="btn btn-primary" (click)="getLocationData()">Submit</button>
     </div>
   </div>
   <div class="row">
@@ -38,7 +38,7 @@
         </table>
       </div>
     </div>
-    <app-pagination [searchData]="search"></app-pagination>
+    <app-pagination [totalRecords]="totalRecords" [recordsPerPage]="50" [offset]="offsetIndex" (getOffsetValue)="getCurrentPageData($event)"></app-pagination>
   </div>
 </div>
 <div class="container" *ngIf="showPanel">

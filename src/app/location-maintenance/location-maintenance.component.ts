@@ -28,17 +28,21 @@ export class LocationMaintenanceComponent implements OnInit {
     'fieldValue': 'location',
     'textValue': ''
   };
+  data: any = [];
+  offsetIndex: any = 0;
+  recordsPerPageIndex: any = 0;
+  totalRecords: any = 0;
+  totalPages: any = 0;
 
   constructor(private mockService: MockService, private locationService: LocationService) { }
 
   ngOnInit() {
     this.getLocationFields();
     this.displayGrid = true;
-    this.getContentData();
+    this.getCurrentPageData(0);
     this.varReadOnly = false;
-    this.getLocationData();
+    this.getLocationData(0);
   }
-
   getLocationFields() {
     let errMessage: any = [];
     this.locationService.getLocationOptions()
@@ -49,18 +53,47 @@ export class LocationMaintenanceComponent implements OnInit {
           errorMsg => errMessage = <any>errorMsg
         );
   }
-  getLocationData(locationSearch?: string) {
+  getLocationData(offset?, locationSearch?) {
+    this.data = [];
+    this.dataArray = [];
+    this.dataArrayCopy = [];
+    if (this.search.textValue) {
+      locationSearch = this.search;
+      offset = 0;
+    }
     let errMessage: any = [];
-    this.locationService.getLocationData(locationSearch)
-        .subscribe(
-          (locationData) => {
-            this.dataArray = locationData;
-            this.dataArrayCopy = locationData;
-          },
-          errorMsg => errMessage = <any>errorMsg
-        );
+    this.locationService.getLocationData(offset, locationSearch)
+                        .subscribe(
+                          (locationData) => {
+                            this.data.push(locationData[0]);
+                            this.dataArray = this.data[0];
+                            this.dataArrayCopy = this.data[0];
+                            this.offsetIndex = locationData[1];
+                            this.recordsPerPageIndex = locationData[2];
+                            this.totalRecords = locationData[3];
+                            this.totalPages = locationData[4];
+                            console.log(this.dataArrayCopy);
+                          },
+                          errorMsg => errMessage = <any>errorMsg
+                        );
   }
-
+  getCurrentPageData(offset) {
+    let errMessage: any = [];
+    this.data = [];
+    this.dataArrayCopy = [];
+    this.locationService.getCurrentPageRecords(offset)
+                        .subscribe(
+                          (contentRange) => {
+                            this.data.push(contentRange[0]);
+                            this.dataArrayCopy = this.data[0];
+                            this.offsetIndex = contentRange[1];
+                            this.recordsPerPageIndex = contentRange[2];
+                            this.totalRecords = contentRange[3];
+                            this.totalPages = contentRange[4];
+                          },
+                          errorMsg => errMessage = <any>errorMsg
+                        );
+  }
   addNewLocation() {
     this.location = {};
     this.showPanel = true;
@@ -82,19 +115,16 @@ export class LocationMaintenanceComponent implements OnInit {
     this.locationTitle = 'Change Location';
     this.location = editData;
     this.varReadOnly = true;
-    console.log(this.location);
   }
   saveLocation(formdata) {
     if (!formdata.active) { formdata.active = false; }
     if (!formdata.secure) { formdata.secure = false; }
     if (!formdata.oversized) { formdata.oversized = false; }
     if (!formdata.pickNPack) { formdata.pickNPack = false; }
-    console.log(formdata);
     let errMessage: any = [];
     this.locationService.addLocationData(formdata)
                         .subscribe(
                           (savedLocationDetails) => {
-                            console.log(savedLocationDetails);
                             this.showPanel = false;
                             this.hidePanel = true;
                           },
@@ -106,21 +136,13 @@ export class LocationMaintenanceComponent implements OnInit {
     this.locationService.updateLocationData(formdata)
                         .subscribe(
                           (updatedLocationDetails) => {
-                            console.log(updatedLocationDetails);
                             this.showPanel = false;
                             this.hidePanel = true;
                           },
                           errorMsg => errMessage = <any>errorMsg
                         );
   }
-  getContentData() {
-    let errMessage: any = [];
-    this.locationService.getContentRange()
-                        .subscribe(
-                          (contentRange) => {
-                            console.log(contentRange);
-                          },
-                          errorMsg => errMessage = <any>errorMsg
-                        );
-  }
+
+
+
 }

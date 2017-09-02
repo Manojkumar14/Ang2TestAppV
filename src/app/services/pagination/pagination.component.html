@@ -1,18 +1,28 @@
 <nav aria-label="Page navigation" class="pagination-style">
   <ul class="pagination">
-    <li>
-      <a href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
+    <li class="{{getFirstDisabled()}}">
+      <a aria-label="Previous" (click)="getFirstPageData()">
+        <span aria-hidden="true">&lt;&lt;</span>
       </a>
     </li>
-    <li><a href="#" (click)="dataFunc()">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
+    <li class="{{getFirstDisabled()}}">
+      <a aria-label="Next" (click)="getPreviousPageData(crntPg)">
+          <span aria-hidden="true">&lt;</span>
+        </a>
+    </li>
     <li>
-      <a href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
+      <span aria-hidden="true" *ngFor="let i of getNumberArray(getNumberOfPages()); let crntPg = index" (click)="setCurrentPage(crntPg, i)" [hidden]="showBtn(crntPg)" [ngStyle]="setColor(crntPg)">
+            <a class="anchorStyle" [ngStyle] = "setColor(crntPg)">{{i}}</a>
+        </span>
+    </li>
+    <li class="{{getLastDisabled()}}">
+      <a aria-label="Next" (click)="getNextPageData(crntPg)">
+          <span aria-hidden="true">&gt;</span>
+        </a>
+    </li>
+    <li class="{{getLastDisabled()}}">
+      <a aria-label="Next" (click)="getLastPageData()">
+        <span aria-hidden="true">&gt;&gt;</span>
       </a>
     </li>
   </ul>

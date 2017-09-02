@@ -13,13 +13,15 @@ import { AppComponent } from './app.component';
 import { GlobalSearchComponent } from './global-search/global-search.component';
 import { LocationMaintenanceComponent } from './location-maintenance/location-maintenance.component';
 import { PaginationComponent } from './services/pagination/pagination.component';
+import { MyPaginationComponent } from './services/my-pagination/my-pagination.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GlobalSearchComponent,
     LocationMaintenanceComponent,
-    PaginationComponent
+    PaginationComponent,
+    MyPaginationComponent
   ],
   imports: [
     BrowserModule, AppRouting, FormsModule, HttpModule
