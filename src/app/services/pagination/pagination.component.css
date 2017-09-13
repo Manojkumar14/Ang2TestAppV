@@ -8,3 +8,6 @@
 a:focus, a:hover {
   text-decoration: none !important;
 }
+.link-style{
+  cursor: pointer;
+}

@@ -38,7 +38,10 @@
         </table>
       </div>
     </div>
-    <app-pagination [totalRecords]="totalRecords" [recordsPerPage]="50" [offset]="offsetIndex" (getOffsetValue)="getCurrentPageData($event)"></app-pagination>
+    <app-pagination [totalRecords]="totalRecords" [recordsPerPage]="50" [offset]="offsetIndex" [searchValue]="search.textValue" (getOffsetValue)="getLocationData($event, search.textValue)"></app-pagination>
+  </div>
+  <div class="container display-style" *ngIf="displayLabel">
+    <label class="danger">No records exists</label>
   </div>
 </div>
 <div class="container" *ngIf="showPanel">
@@ -50,7 +53,7 @@
           <div class="form-group">
             <label for="location" class="control-label col-md-3">Location: </label>
             <div class="col-md-6">
-              <input type="text" class="form-control" id="location" required [(ngModel)]="location.location" name="location" placeholder="01-01-01-01">
+              <input type="text" class="form-control" id="location" required [(ngModel)]="location.location" name="location" placeholder="01-01-01-01" [disabled]="locationTitle == 'Change Location'">
             </div>
           </div>
           <div class="form-group">

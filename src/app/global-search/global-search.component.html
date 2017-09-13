@@ -20,23 +20,29 @@
     <span>{{errorMsg}}</span>
   </div>
   <div class="col-md-1">
-    <button class="btn btn-primary" (click)="onSubmit(search)">Submit</button>
+    <button class="btn btn-primary" (click)="onSubmit(0,search)">Submit</button>
   </div>
 </div>
 <div class="container" *ngIf="displayGrid">
   <h4>{{tableTitle}} details</h4>
-  <div class="grid-style">
-    <table class="table table-bordered table-condensed table-striped">
-      <thead>
-        <tr>
-          <th *ngFor="let field of fieldsArray">{{field.label}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of dataArray">
-          <td *ngFor="let field of fieldsArray">{{data[field.name]}}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="panel panel-default">
+    <div class="grid-style">
+      <table class="table table-bordered table-condensed table-striped">
+        <thead>
+          <tr>
+            <th *ngFor="let field of fieldsArray">{{field.label}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of dataArray">
+            <td *ngFor="let field of fieldsArray">{{data[field.name]}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+  <app-pagination [totalRecords]="totalRecords" [recordsPerPage]="50" [offset]="offsetIndex" [searchValue]="search.textValue" (getOffsetValue)="onSubmit($event, search.textValue)"></app-pagination>
+</div>
+<div class="container display-style" *ngIf="displayLabel">
+  <label class="danger">No records exists</label>
 </div>

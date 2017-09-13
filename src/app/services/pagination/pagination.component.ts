@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { NgStyle } from '@angular/common';
 
 
@@ -7,10 +7,11 @@ import { NgStyle } from '@angular/common';
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.css']
 })
-export class PaginationComponent implements  OnInit {
+export class PaginationComponent implements OnChanges {
   @Input() totalRecords;
   @Input() recordsPerPage;
   @Input() offset;
+  @Input() searchValue;
 
   @Output() getOffsetValue: EventEmitter<any> = new EventEmitter();
 
@@ -19,21 +20,30 @@ export class PaginationComponent implements  OnInit {
   incIndex: any = 5;
   decIndex: any = -1;
   flag: any = 0;
+
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges(changes: any): void {
+    if (changes.totalRecords) {
+      this.currentPage = 0;
+      this.lastIndex = -1;
+      this.incIndex = 5;
+      this.decIndex = -1;
+      this.flag = 0;
+    }
   }
+
   getFirstDisabled() {
     if (this.currentPage === 0) {
       return 'disabled';
-    }else {
+    } else {
       return 'false';
     }
   }
   getLastDisabled() {
     if (this.currentPage === Math.ceil(this.totalRecords / this.recordsPerPage) - 1) {
       return 'disabled';
-    }else {
+    } else {
       return 'false';
     }
   }
@@ -49,25 +59,27 @@ export class PaginationComponent implements  OnInit {
     const pages = Math.ceil(this.totalRecords / this.recordsPerPage);
     return pages; // this function returns number..!
   }
-  setCurrentPage(ind, btnIndex) {
-    this.currentPage = ind;
-    if (this.currentPage !== 0 && this.currentPage + 1 !== Math.ceil(this.totalRecords / this.recordsPerPage)) {
-      if (this.currentPage > this.incIndex && this.incIndex < Math.ceil(this.totalRecords / this.recordsPerPage)) {
-        if (btnIndex !== this.currentPage) {
-          this.incIndex++;
-          this.decIndex++;
-        }
-      }else {
-        if (this.currentPage < this.incIndex && this.incIndex > 5) {
-          if (btnIndex !== this.currentPage) {
-            this.incIndex--;
-            this.decIndex--;
+  setCurrentPage(current, index) {
+    if (this.currentPage !== current) {
+      this.currentPage = current;
+      if (this.currentPage !== 0 && this.currentPage + 1 !== Math.ceil(this.totalRecords / this.recordsPerPage)) {
+        if (this.currentPage > this.incIndex && this.incIndex < Math.ceil(this.totalRecords / this.recordsPerPage)) {
+          if (index !== this.currentPage) {
+            this.incIndex++;
+            this.decIndex++;
+          }
+        } else {
+          if (this.currentPage < this.incIndex && this.incIndex > 5) {
+            if (index !== this.currentPage) {
+              this.incIndex--;
+              this.decIndex--;
+            }
           }
         }
       }
+      const offSetValue = this.currentPage * 50;
+      this.getOffsetValue.emit(JSON.stringify(offSetValue));
     }
-    const offSetValue = this.currentPage * 50;
-    this.getOffsetValue.emit(JSON.stringify(offSetValue));
   }
   showBtn(ind) {
     if (ind < this.incIndex && ind > this.decIndex) {
@@ -81,51 +93,59 @@ export class PaginationComponent implements  OnInit {
     }
   }
   getFirstPageData() {// this function returns first Page details..!
-    this.currentPage = 0;
-    this.lastIndex = -1;
-    this.incIndex = 5;
-    this.decIndex = -1;
-    const offSetValue = this.offset * 0;
-    this.getOffsetValue.emit(JSON.stringify(offSetValue));
+    if (this.currentPage !== 0) {
+      this.currentPage = 0;
+      this.lastIndex = -1;
+      this.incIndex = 5;
+      this.decIndex = -1;
+      const offSetValue = this.offset * 0;
+      this.getOffsetValue.emit(JSON.stringify(offSetValue));
+    }
   }
   getPreviousPageData(ind) {// this function returns previous Page details..!
     if (this.currentPage !== 0) {
-      this.currentPage = this.currentPage - 1;
-    }
-    if (this.incIndex > 5) {
-      this.incIndex = this.incIndex - 1;
-      this.decIndex = this.decIndex - 1;
-      const offSetValue = this.currentPage * 50 ;
+      if (this.currentPage !== 0) {
+        this.currentPage = this.currentPage - 1;
+      }
+      if (this.incIndex > 5) {
+        this.incIndex = this.incIndex - 1;
+        this.decIndex = this.decIndex - 1;
+      }
+      const offSetValue = this.currentPage * 50;
       this.getOffsetValue.emit(JSON.stringify(offSetValue));
     }
   }
   getNextPageData(ind) {// this function returns next Page details..!
-    this.flag = 0;
-    if (this.incIndex < Math.ceil(this.totalRecords / this.recordsPerPage) ) {
-      this.currentPage = this.currentPage + 1;
-      this.flag++;
-      this.incIndex++;
-      this.decIndex++;
-    }
-    if ((this.currentPage < Math.floor(this.totalRecords / this.recordsPerPage)) && (this.incIndex - 1 !== this.currentPage)) {
-      if (this.flag === 0) {
-          if (this.currentPage !== Math.ceil(this.totalRecords / this.recordsPerPage) - 1) {
-              this.currentPage++;
-          }
-      } else {
-          this.flag = 0;
+    if (this.currentPage !== Math.ceil(this.totalRecords / this.recordsPerPage) - 1) {
+      this.flag = 0;
+      if (this.incIndex < Math.ceil(this.totalRecords / this.recordsPerPage)) {
+        this.currentPage = this.currentPage + 1;
+        this.flag++;
+        this.incIndex++;
+        this.decIndex++;
       }
-  }
-    const offSetValue = this.currentPage * 50 ;
-    this.getOffsetValue.emit(JSON.stringify(offSetValue));
+      if ((this.currentPage < Math.floor(this.totalRecords / this.recordsPerPage)) && (this.incIndex - 1 !== this.currentPage)) {
+        if (this.flag === 0) {
+          if (this.currentPage !== Math.ceil(this.totalRecords / this.recordsPerPage) - 1) {
+            this.currentPage++;
+          }
+        } else {
+          this.flag = 0;
+        }
+      }
+      const offSetValue = this.currentPage * 50;
+      this.getOffsetValue.emit(JSON.stringify(offSetValue));
+    }
   }
   getLastPageData(ind) { // this function returns last Page details..!
+    if (this.currentPage !== Math.ceil(this.totalRecords / this.recordsPerPage) - 1) {
       this.currentPage = Math.ceil(this.totalRecords / this.recordsPerPage) - 1;
       this.incIndex = this.currentPage + 1;
       this.decIndex = this.currentPage - 5;
       this.lastIndex = this.currentPage + 1;
-      const offSetValue = this.currentPage * 50 ;
+      const offSetValue = this.currentPage * 50;
       this.getOffsetValue.emit(JSON.stringify(offSetValue));
+    }
   }
 
 

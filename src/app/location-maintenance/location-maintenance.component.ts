@@ -12,9 +12,9 @@ import { LocationService } from '../services/location.service';
 export class LocationMaintenanceComponent implements OnInit {
   locationForm: FormGroup;
   LocationData: any[];
+  dataArray: any = [];
   dataArrayCopy: any[];
   fieldsArray: any = [];
-  dataArray: any = [];
   location: any = {};
   showPanel: any = false;
   hidePanel: any = true;
@@ -24,6 +24,7 @@ export class LocationMaintenanceComponent implements OnInit {
   locationTitle: any = 'Add/Change location';
   errorMsg = '';
   displayGrid = false;
+  displayLabel = false;
   search: any = {
     'fieldValue': 'location',
     'textValue': ''
@@ -39,7 +40,6 @@ export class LocationMaintenanceComponent implements OnInit {
   ngOnInit() {
     this.getLocationFields();
     this.displayGrid = true;
-    this.getCurrentPageData(0);
     this.varReadOnly = false;
     this.getLocationData(0);
   }
@@ -59,7 +59,9 @@ export class LocationMaintenanceComponent implements OnInit {
     this.dataArrayCopy = [];
     if (this.search.textValue) {
       locationSearch = this.search;
-      offset = 0;
+      if (offset === undefined) {
+        offset = 0;
+      }
     }
     let errMessage: any = [];
     this.locationService.getLocationData(offset, locationSearch)
@@ -72,7 +74,13 @@ export class LocationMaintenanceComponent implements OnInit {
                             this.recordsPerPageIndex = locationData[2];
                             this.totalRecords = locationData[3];
                             this.totalPages = locationData[4];
-                            console.log(this.dataArrayCopy);
+                            if (this.dataArrayCopy.length !== 0) {
+                              this.displayGrid = true;
+                              this.displayLabel = false;
+                            }else {
+                              this.displayGrid = false;
+                              this.displayLabel = true;
+                            }
                           },
                           errorMsg => errMessage = <any>errorMsg
                         );

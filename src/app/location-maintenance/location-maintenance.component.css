@@ -10,6 +10,7 @@
 h3{
   bottom:20px;
   color:green;
+  font-weight: 600;
 }
 h4{
   color:green;
@@ -43,4 +44,8 @@ button{
 }
 .col-md-1 {
   width: 11.333333% !important;
+}
+.display-style{
+  text-align: center;
+  color: orangered;
 }

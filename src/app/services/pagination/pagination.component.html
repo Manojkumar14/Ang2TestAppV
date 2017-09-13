@@ -1,26 +1,26 @@
-<nav aria-label="Page navigation" class="pagination-style">
+<nav aria-label="Page navigation" class="pagination-style" *ngIf="totalRecords">
   <ul class="pagination">
-    <li class="{{getFirstDisabled()}}">
-      <a aria-label="Previous" (click)="getFirstPageData()">
+    <li class="{{getFirstDisabled()}} link-style">
+      <a aria-label="Previous" (click)="getFirstPageData(crntPg, i)">
         <span aria-hidden="true">&lt;&lt;</span>
       </a>
     </li>
-    <li class="{{getFirstDisabled()}}">
+    <li class="{{getFirstDisabled()}} link-style">
       <a aria-label="Next" (click)="getPreviousPageData(crntPg)">
           <span aria-hidden="true">&lt;</span>
         </a>
     </li>
-    <li>
-      <span aria-hidden="true" *ngFor="let i of getNumberArray(getNumberOfPages()); let crntPg = index" (click)="setCurrentPage(crntPg, i)" [hidden]="showBtn(crntPg)" [ngStyle]="setColor(crntPg)">
+    <li class="link-style">
+      <span aria-hidden="true" *ngFor="let i of getNumberArray(getNumberOfPages()); let crntPg = index" (click)="setCurrentPage(crntPg, crntPg)" [hidden]="showBtn(crntPg)" [ngStyle]="setColor(crntPg)">
             <a class="anchorStyle" [ngStyle] = "setColor(crntPg)">{{i}}</a>
         </span>
     </li>
-    <li class="{{getLastDisabled()}}">
+    <li class="{{getLastDisabled()}} link-style">
       <a aria-label="Next" (click)="getNextPageData(crntPg)">
           <span aria-hidden="true">&gt;</span>
         </a>
     </li>
-    <li class="{{getLastDisabled()}}">
+    <li class="{{getLastDisabled()}} link-style">
       <a aria-label="Next" (click)="getLastPageData()">
         <span aria-hidden="true">&gt;&gt;</span>
       </a>
