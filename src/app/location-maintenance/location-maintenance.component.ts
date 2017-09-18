@@ -113,6 +113,7 @@ export class LocationMaintenanceComponent implements OnInit {
   onCancel() {
     this.showPanel = false;
     this.hidePanel = true;
+    this.getLocationData(0);
   }
   onChange(editData) {
     this.location = {};
@@ -135,6 +136,7 @@ export class LocationMaintenanceComponent implements OnInit {
                           (savedLocationDetails) => {
                             this.showPanel = false;
                             this.hidePanel = true;
+                            this.getLocationData();
                           },
                           errorMsg => errMessage = <any>errorMsg
                         );
@@ -146,6 +148,7 @@ export class LocationMaintenanceComponent implements OnInit {
                           (updatedLocationDetails) => {
                             this.showPanel = false;
                             this.hidePanel = true;
+                            this.getLocationData();
                           },
                           errorMsg => errMessage = <any>errorMsg
                         );
