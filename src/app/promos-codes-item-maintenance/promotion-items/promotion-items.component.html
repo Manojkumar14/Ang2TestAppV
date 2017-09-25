@@ -1,0 +1,36 @@
+<div class="container">
+  <h4>Item Maintenance</h4>
+  <div class="row">
+    <div class="col-sm-1">
+      <button class="btn btn-sm btn-success" (click)="addNewLocation()">+ Add New Item</button>
+    </div>
+    <div class="col-sm-4 paraStyle">
+      <p>Check the box beside the row you want to change</p>
+    </div>
+  </div>
+  <div class="container" *ngIf="displayGrid">
+    <div class="panel panel-default">
+      <div class="grid-style">
+        <table class="table table-bordered table-condensed table-striped table-hover">
+          <thead>
+            <tr>
+              <th></th>
+              <th *ngFor="let field of promotionItemFieldsArray">{{field.label}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of promotionItemDataArrayCopy">
+              <td><input type="checkbox" id="checkValue" (change)="onChange(data)"></td>
+              <td *ngFor="let field of promotionItemFieldsArray">{{data[field.name]}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <app-pagination [hidden]="totalRecords<50" [totalRecords]="totalRecords" [recordsPerPage]="50" [offset]="offsetIndex"
+      (getOffsetValue)="getPromotionItemsDetails($event, selectedRowId)"></app-pagination>
+  </div>
+  <div class="container display-style" *ngIf="displayLabel">
+    <label class="danger">No promotion items exists</label>
+  </div>
+</div>

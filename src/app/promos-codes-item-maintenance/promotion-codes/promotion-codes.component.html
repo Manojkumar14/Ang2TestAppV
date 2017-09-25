@@ -1,0 +1,108 @@
+<div class="container">
+  <h4> Promotion Code</h4>
+  <div class="row">
+    <div class="col-sm-1">
+      <button class="btn btn-sm btn-success" (click)="addNewLocation()">+ Add New Code</button>
+    </div>
+    <div class="col-sm-4 paraStyle">
+      <p>Check the box beside the row you want to change</p>
+    </div>
+  </div>
+  <div class="container"  *ngIf="displayGrid">
+    <div class="panel panel-default">
+      <div class="grid-style">
+        <table class="table table-bordered table-condensed table-striped table-hover">
+          <thead>
+            <tr>
+              <th></th>
+              <th *ngFor="let field of promotionCodeFieldsArray">{{field.label}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of promotionCodeDataArrayCopy">
+              <td><input type="checkbox" id="checkValue" (change)="onChange(data)"></td>
+              <td *ngFor="let field of promotionCodeFieldsArray">{{data[field.name]}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <app-pagination [hidden]="totalRecords<50" [totalRecords]="totalRecords" [recordsPerPage]="50" [offset]="offsetIndex"
+    (getOffsetValue)="getPromotionCodesDetails($event, selectedRowId)"></app-pagination>
+  </div>
+  <div class="container display-style" *ngIf="displayLabel">
+    <label class="danger">No promotion codes exists</label>
+  </div>
+</div>
+<div class="container" *ngIf="showPanel">
+  <div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading">{{promotionCodeTitle}}</div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-1"><span> Prom Id: 1234</span></div>
+          <div class="col-md-2"><span>1234 description</span></div>
+        </div><br/>
+        <form class="form-horizontal" #promotionCodeForm="ngForm">
+          <div class="form-group">
+            <label for="promotionId" class="control-label col-md-3">Promotion Code ID: </label>
+            <div class="col-md-6">
+              <input type="number" class="form-control" id="promotionCodeId" [(ngModel)]="promotionCodeId" name="promotionCodeId" placeholder="Next Available Auto Incremented Promotion Code Id"
+                [disabled]="true">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="codeDescription" class="control-label col-md-3">Code Description : </label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="codeDescription" required [(ngModel)]="promotion.promoDesc" name="codeDescription"
+                placeholder="Enter code description">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="promoValue" class="control-label col-md-3">Value : </label>
+            <div class="col-md-6">
+              <input type="number" class="form-control" id="promoValue" required [(ngModel)]="promotion.promoValue" name="promoValue" placeholder="Enter value in Dollars">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="startDate" class="control-label col-md-3">Start Date : </label>
+            <div class="col-md-6">
+              <input type="date" class="form-control" id="startDate" required [(ngModel)]="promotion.startDate" name="startDate" placeholder="Select Start Date">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="endDate" class="control-label col-md-3">End Date : </label>
+            <div class="col-md-6">
+              <input type="date" class="form-control" id="endDate" required [(ngModel)]="promotion.endDate" name="endDate" placeholder="Select End Date">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="usageLimit" class="control-label col-md-3">Usage Limit : </label>
+            <div class="col-md-6">
+              <input type="number" class="form-control" id="usageLimit" required [(ngModel)]="promotion.usageLimit" name="usageLimit" placeholder="Enter usage limit value">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-3 col-md-1 md-check-style">
+              <input type="checkbox" id="active" [(ngModel)]="promotion.active" name="active">&nbsp;<b>Active</b>
+            </div>
+            <div class="col-md-2 md-check-style">
+              <input type="checkbox" id="allowOverPymt" [(ngModel)]="promotion.allowOverPymt" name="allowOverPymt">&nbsp;<b>Allow OverPayment</b>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-3 col-md-1"><!-- *ngIf="displaySaveBtn" -->
+              <button type="button" class="btn btn-primary" [disabled]="!promotionForm.form.valid" (click)="savePromotion(promotionForm.value)">Save</button>
+            </div>
+            <div class="col-md-offset-3 col-md-1"><!-- *ngIf="displayUpdateBtn" -->
+              <button type="button" class="btn btn-primary" (click)="updatePromotion(promotionForm.value)">Update</button>
+            </div>
+            <div class="col-md-1">
+              <button class="btn btn-primary" (click)="onCancel()">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

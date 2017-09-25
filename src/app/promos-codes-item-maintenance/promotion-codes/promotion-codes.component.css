@@ -1,0 +1,55 @@
+.grid-style{
+  height: 125px;
+  table-layout: fixed;
+  overflow-y: auto ;
+}
+.container{
+  margin-top: 10px;
+  margin-bottom: -10px !important;
+  text-align: center;
+}
+.container-style {
+  margin-top: -30px;
+}
+h3{
+  bottom:20px;
+  color:green;
+  font-weight: 600;
+}
+h4{
+  color:green;
+  margin: 0px;
+}
+.row{
+  margin-top: 0px !important;
+}
+th{
+  text-align: center;
+  background-color: #DCDCDC;
+}
+td{
+  text-align: left;
+}
+button{
+  float: left;
+  margin-right: 0px;
+}
+.paraStyle{
+  top:15px !important;
+}
+.col-sm-1{
+  top: 5px;
+}
+.md-check-style{
+  text-align: center;
+}
+.col-md-offset-3 {
+  margin-left: 26% !important;
+}
+.col-md-1 {
+  width: 11.333333% !important;
+}
+.display-style{
+  text-align: center;
+  color: orangered;
+}

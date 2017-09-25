@@ -1,0 +1,120 @@
+<div class="container container-style">
+  <h3>Promotion, Code & Item Maintenance</h3>
+  <div *ngIf="hidePanel">
+      <div class="row">
+          <div class="col-sm-2">
+            <label>Promotion ID:</label>
+          </div>
+          <div class="col-sm-2">
+            <input class="form-control input-sm" id="searchValue" [(ngModel)]="search.textValue" required>
+          </div>
+          <div class="col-sm-1">
+            <input type="radio" [(ngModel)]="search.radioValue" name="searchCheck" value="active" required>
+            <label>Active</label>
+          </div>
+          <div class="col-sm-1">
+            <input type="radio" [(ngModel)]="search.radioValue" name="searchCheck" value="all" required>
+            <label>All</label>
+          </div>
+          <div class="col-sm-2">
+            <button class="btn btn-sm btn-primary" (click)="getPromotionDetails()">Submit</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-1">
+            <button class="btn btn-sm btn-success" (click)="addNewPromotion()">+ Add New</button>
+          </div>
+          <div class="col-sm-6 paraStyle">
+            <p>Check the box beside the row you want to change, click elsewhere on a row to see</p>
+          </div>
+        </div>
+        <div class="container" *ngIf="displayGrid">
+          <div class="panel panel-default">
+            <div class="grid-style">
+              <table class="table table-bordered table-condensed table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th *ngFor="let field of promotionFieldsArray">{{field.label}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of promotionDataArrayCopy; let i = index"  (click)="setClickedRow(i, data)" [class.active]="data.promId == selectedRowPromId">
+                    <td><input type="checkbox" id="checkValue" (change)="onChange(data)"></td>
+                    <td *ngFor="let field of promotionFieldsArray">{{data[field.name]}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <app-pagination [hidden]="totalRecords<50" [totalRecords]="totalRecords" [recordsPerPage]="50" [offset]="offsetIndex" [searchValue]="search.textValue"
+            (getOffsetValue)="getPromotionDetails($event, search.textValue)"></app-pagination>
+        </div>
+        <div class="container display-style" *ngIf="displayLabel">
+          <label class="danger">No records exists</label>
+        </div>
+  </div>
+</div>
+<div class="container" *ngIf="showPanel">
+  <div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading">{{promotionTitle}}</div>
+      <div class="panel-body">
+        <form class="form-horizontal" #promotionForm="ngForm">
+          <div class="form-group" [hidden]="promotionTitle == 'Add New Promotion'">
+            <label for="promotionId" class="control-label col-md-3">Promotion ID: </label>
+            <div class="col-md-6">
+              <input type="number" class="form-control" id="promotionId" [(ngModel)]="promId" name="promotionId" placeholder="Enter Promotion Id"
+                [disabled]="promotionTitle == 'Change Promotion'">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="vpcCode" class="control-label col-md-3">VPC : </label>
+            <div class="col-md-6">
+              <select class="form-control" [(ngModel)]="vpc" name="vpc" placeholder="Select value here">
+                  <option value="89985" selected>Select VPC Code</option>
+                  <option *ngFor="let vpcdata of vpCustomersData" [ngValue]="vpcdata.vpcId">{{vpcdata.vpcCode}}</option>
+                </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="description" class="control-label col-md-3">Description : </label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="description" required [(ngModel)]="promotion.promDesc" name="description" placeholder="Enter promotion description">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="startDate" class="control-label col-md-3">Start Date : </label>
+            <div class="col-md-6">
+                <input type="date" class="form-control" id="startDate" required [(ngModel)]="promotion.startDate" name="startDate" placeholder="Select Start Date">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="endDate" class="control-label col-md-3">End Date : </label>
+            <div class="col-md-6">
+              <input type="date" class="form-control" id="endDate" required [(ngModel)]="promotion.endDate" name="endDate" placeholder="Select End Date">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-3 col-md-1 md-check-style">
+              <input type="checkbox" id="active" [(ngModel)]="promotion.active" name="active">&nbsp;<b>Active</b>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-5 col-md-1" *ngIf="displaySaveBtn">
+              <button type="button" class="btn btn-primary" [disabled]="!promotionForm.form.valid" (click)="savePromotion(promotionForm.value)">Save</button>
+            </div>
+            <div class="col-md-offset-5 col-md-1" *ngIf="displayUpdateBtn">
+              <button type="button" class="btn btn-primary" (click)="updatePromotion(promotionForm.value)">Update</button>
+            </div>
+            <div class="col-md-1">
+              <button class="btn btn-primary" (click)="onCancel()">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<app-promotion-codes *ngIf="displayGrid" [selectedRowId]="selectedRowPromId"></app-promotion-codes>
+<app-promotion-items *ngIf="displayGrid" [selectedRowId]="selectedRowPromId"></app-promotion-items>

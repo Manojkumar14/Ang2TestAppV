@@ -31,6 +31,10 @@ export class AppComponent {
         case 'Location Maintenance':
           this.router.navigate(['/locationMaintenance']);
           break;
+        case 'Promos, Codes & Item Maintenance':
+          this.router.navigate(['/promosCodesItemMaintenance']);
+          break;
+
         default:
           this.displayRoute = false;
           break;
