@@ -1,36 +1,120 @@
 <div class="container">
   <h4>Item Maintenance</h4>
-  <div class="row">
-    <div class="col-sm-1">
-      <button class="btn btn-sm btn-success" (click)="addNewLocation()">+ Add New Item</button>
-    </div>
-    <div class="col-sm-4 paraStyle">
-      <p>Check the box beside the row you want to change</p>
-    </div>
-  </div>
-  <div class="container" *ngIf="displayGrid">
-    <div class="panel panel-default">
-      <div class="grid-style">
-        <table class="table table-bordered table-condensed table-striped table-hover">
-          <thead>
-            <tr>
-              <th></th>
-              <th *ngFor="let field of promotionItemFieldsArray">{{field.label}}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of promotionItemDataArrayCopy">
-              <td><input type="checkbox" id="checkValue" (change)="onChange(data)"></td>
-              <td *ngFor="let field of promotionItemFieldsArray">{{data[field.name]}}</td>
-            </tr>
-          </tbody>
-        </table>
+  <div *ngIf="hidePanel">
+    <div class="row">
+      <div class="col-sm-1">
+        <button class="btn btn-sm btn-success" (click)="addNewPromotionItem()">+ Add New Item</button>
+      </div>
+      <div class="col-sm-4 paraStyle">
+        <p>Check the box beside the row you want to change</p>
       </div>
     </div>
-    <app-pagination [hidden]="totalRecords<50" [totalRecords]="totalRecords" [recordsPerPage]="50" [offset]="offsetIndex"
-      (getOffsetValue)="getPromotionItemsDetails($event, selectedRowId)"></app-pagination>
+    <div class="container" *ngIf="displayGrid">
+      <div class="panel panel-default">
+        <div class="grid-style">
+          <table class="table table-bordered table-condensed table-striped table-hover">
+            <thead>
+              <tr>
+                <th></th>
+                <th *ngFor="let field of promotionItemFieldsArray">{{field.label}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of promotionItemDataArrayCopy">
+                <td><input type="checkbox" id="checkValue" (change)="onChange(data)"></td>
+                <td *ngFor="let field of promotionItemFieldsArray">{{data[field.name]}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <app-pagination [hidden]="totalRecords<50" [totalRecords]="totalRecords" [recordsPerPage]="50" [offset]="offsetIndex" (getOffsetValue)="getPromotionItemsDetails($event, selectedPromoId)"></app-pagination>
+    </div>
+    <div class="container display-style" *ngIf="displayLabel">
+      <label class="danger">No promotion items exists</label>
+    </div>
   </div>
-  <div class="container display-style" *ngIf="displayLabel">
-    <label class="danger">No promotion items exists</label>
+</div>
+<div class="container" *ngIf="showPanel">
+  <div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading">{{promotionItemTitle}}</div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-1"><span> Prom Id: <b>{{selectedPromoId}}</b></span></div>
+          <div class="col-md-2"><span><b>{{selectedPromoDesc}}</b></span></div>
+        </div><br/>
+        <form class="form-horizontal" #promotionItemForm="ngForm">
+          <div class="form-group" [hidden]="promotionItemTitle == 'Add New Promotion Item'">
+            <label for="promotionId" class="control-label col-md-3">Promotion Code ID: </label>
+            <div class="col-md-6">
+              <input type="number" class="form-control" id="promotionCodeId" [(ngModel)]="promotionCodeId" name="promotionCodeId" placeholder="Next Available Auto Incremented Promotion Code Id"
+                [disabled]="promotionItemTitle == 'Change Promotion Item'">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="vpcCode" class="control-label col-md-3">VPC : </label>
+            <div class="col-md-6">
+              <select class="form-control" [(ngModel)]="vpc" name="vpc" placeholder="Select value here">
+                  <option value="89985" selected>Select VPC Code</option>
+                  <option *ngFor="let vpcdata of vpCustomersData" [ngValue]="vpcdata.vpcId">{{vpcdata.vpcCode}}</option>
+                </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="codeDescription" class="control-label col-md-3">Code Description : </label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="codeDescription" required [(ngModel)]="promotionItem.promoDesc" name="codeDescription"
+                placeholder="Enter code description">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="promoValue" class="control-label col-md-3">Value : </label>
+            <div class="col-md-6">
+              <input type="number" class="form-control" id="promoValue" required [(ngModel)]="promotionItem.promoValue" name="promoValue"
+                placeholder="Enter value in Dollars">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="startDate" class="control-label col-md-3">Start Date : </label>
+            <div class="col-md-6">
+              <input type="date" class="form-control" id="startDate" required [(ngModel)]="promotionItem.startDate" name="startDate" placeholder="Select Start Date">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="endDate" class="control-label col-md-3">End Date : </label>
+            <div class="col-md-6">
+              <input type="date" class="form-control" id="endDate" required [(ngModel)]="promotionItem.endDate" name="endDate" placeholder="Select End Date">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="usageLimit" class="control-label col-md-3">Usage Limit : </label>
+            <div class="col-md-6">
+              <input type="number" class="form-control" id="usageLimit" required [(ngModel)]="promotionItem.usageLimit" name="usageLimit"
+                placeholder="Enter usage limit value">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-3 col-md-1 md-check-style">
+              <input type="checkbox" id="active" [(ngModel)]="promotionItem.active" name="active">&nbsp;<b>Active</b>
+            </div>
+            <div class="col-md-2 md-check-style">
+              <input type="checkbox" id="allowOverPymt" [(ngModel)]="promotionItem.allowOverPymt" name="allowOverPymt">&nbsp;<b>Allow OverPayment</b>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-offset-3 col-md-1" *ngIf="displaySaveBtn">
+              <button type="button" class="btn btn-primary" [disabled]="!promotionItemForm.form.valid" (click)="savePromotionItem(promotionItemForm.value)">Save</button>
+            </div>
+            <div class="col-md-offset-3 col-md-1" *ngIf="displayUpdateBtn">
+              <button type="button" class="btn btn-primary" (click)="updatePromotionItem(promotionItemForm.value)">Update</button>
+            </div>
+            <div class="col-md-1">
+              <button class="btn btn-primary" (click)="onCancel()">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

@@ -17,7 +17,7 @@ export class PromosCodesItemsService {
   locationType = {};
   page: any = 1;
   startIndex: any;
-  EndIndex: any;
+  endIndex: any;
   totalRecords: any;
   totalPages: any;
   tempData: any = [];
@@ -52,7 +52,7 @@ export class PromosCodesItemsService {
     const perPage = 50;
     this.totalPages = 0;
     this.startIndex = 0;
-    this.EndIndex = 0;
+    this.endIndex = 0;
     this.totalRecords = 0;
     this.tempData = [];
 
@@ -65,6 +65,9 @@ export class PromosCodesItemsService {
     if (promotionSearch) {
       requestOptions.search.set(promotionSearch.fieldValue, JSON.stringify({ $like: `${promotionSearch.textValue}%` }));
     }
+    if (promotionSearch.radioValue === true) {
+      requestOptions.search.set('active', JSON.stringify({ $like: `${1}%` }));
+    }
     if (offsetIndex !== null) {
       requestOptions.search.set('offset', JSON.stringify(parseInt(offsetIndex, 0)));
       requestOptions.search.set('limit', JSON.stringify(perPage));
@@ -76,14 +79,14 @@ export class PromosCodesItemsService {
                         const pattern = /(\d+)-(\d+)\/(\d+)/g;
                         const match = pattern.exec(contentRange);
                         this.startIndex = +(match[1]);
-                        this.EndIndex = +(match[2]);
+                        this.endIndex = +(match[2]);
                         this.totalRecords = +(match[3]);
                         this.totalPages = Math.floor((this.totalRecords / perPage) + 1);
                       }
                     this.tempData.push(
                         this.extractData(response),
                         this.startIndex,
-                        this.EndIndex,
+                        this.endIndex,
                         this.totalRecords,
                         this.totalPages
                     );
@@ -121,7 +124,7 @@ export class PromosCodesItemsService {
     const perPage = 50;
     this.totalPages = 0;
     this.startIndex = 0;
-    this.EndIndex = 0;
+    this.endIndex = 0;
     this.totalRecords = 0;
     const tempCodeData: any = [];
 
@@ -142,20 +145,37 @@ export class PromosCodesItemsService {
                         const pattern = /(\d+)-(\d+)\/(\d+)/g;
                         const match = pattern.exec(contentRange);
                         this.startIndex = +(match[1]);
-                        this.EndIndex = +(match[2]);
+                        this.endIndex = +(match[2]);
                         this.totalRecords = +(match[3]);
                         this.totalPages = Math.floor((this.totalRecords / perPage) + 1);
                       }
                     tempCodeData.push(
                         this.extractData(response),
                         this.startIndex,
-                        this.EndIndex,
+                        this.endIndex,
                         this.totalRecords,
                         this.totalPages
                     );
                     return tempCodeData;
                     })
                     .catch(this.handleError);
+  }
+  addPromotionCodeData(promId, promotionCodeData): Observable<any> {
+    if (promotionCodeData) {
+      this.url = this.baseUrl + 'promotions' + '/' + promId + '/' + 'codes';
+      return this.http.post(this.url, promotionCodeData)
+                      .map(this.extractData)
+                      .catch(this.handleError);
+    }
+  }
+  updatePromotionCodeData(promId, promotionCodeId, promotionCodeData ): Observable<any> {
+    console.log(JSON.stringify(promotionCodeData));
+    if (promotionCodeData) {
+      this.url = this.baseUrl + 'promotions' + '/' + promId + '/' + 'codes' + '/' + promotionCodeId;
+      return this.http.put(this.url, promotionCodeData)
+                      .map(this.extractData)
+                      .catch(this.handleError);
+    }
   }
   getPromotionItemOptions(promId): Observable<any> {
     if (this.baseUrl) {
@@ -170,12 +190,12 @@ export class PromosCodesItemsService {
     const perPage = 50;
     this.totalPages = 0;
     this.startIndex = 0;
-    this.EndIndex = 0;
+    this.endIndex = 0;
     this.totalRecords = 0;
     const tempItemData: any = [];
 
     if (this.baseUrl) {
-      this.url = this.baseUrl + 'promotions' + '/' + promId + '/' + 'codes';
+      this.url = this.baseUrl + 'promotions' + '/' + promId + '/' + 'items';
     }
     const requestOptions = new RequestOptions({
       search: new URLSearchParams()
@@ -191,20 +211,37 @@ export class PromosCodesItemsService {
                         const pattern = /(\d+)-(\d+)\/(\d+)/g;
                         const match = pattern.exec(contentRange);
                         this.startIndex = +(match[1]);
-                        this.EndIndex = +(match[2]);
+                        this.endIndex = +(match[2]);
                         this.totalRecords = +(match[3]);
                         this.totalPages = Math.floor((this.totalRecords / perPage) + 1);
                       }
                       tempItemData.push(
                         this.extractData(response),
                         this.startIndex,
-                        this.EndIndex,
+                        this.endIndex,
                         this.totalRecords,
                         this.totalPages
                     );
                     return tempItemData;
                     })
                     .catch(this.handleError);
+  }
+  addPromotionItemData(promId, promotionItemData): Observable<any> {
+    if (promotionItemData) {
+      this.url = this.baseUrl + 'promotions' + '/' + promId + '/' + 'items';
+      return this.http.post(this.url, promotionItemData)
+                      .map(this.extractData)
+                      .catch(this.handleError);
+    }
+  }
+  updatePromotionItemData(promId, promotionItemId, promotionItemData ): Observable<any> {
+    console.log(JSON.stringify(promotionItemData));
+    if (promotionItemData) {
+      this.url = this.baseUrl + 'promotions' + '/' + promId + '/' + 'items' + '/' + promotionItemId;
+      return this.http.put(this.url, promotionItemData)
+                      .map(this.extractData)
+                      .catch(this.handleError);
+    }
   }
 
   private extractData(response: Response) {

@@ -39,7 +39,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data of promotionDataArrayCopy; let i = index"  (click)="setClickedRow(i, data)" [class.active]="data.promId == selectedRowPromId">
+                  <tr *ngFor="let data of promotionDataArray; let i = index"  (click)="setClickedRow(i, data)" [class.active]="data.promId == selectedRowPromId">
                     <td><input type="checkbox" id="checkValue" (change)="onChange(data)"></td>
                     <td *ngFor="let field of promotionFieldsArray">{{data[field.name]}}</td>
                   </tr>
@@ -116,5 +116,9 @@
     </div>
   </div>
 </div>
-<app-promotion-codes *ngIf="displayGrid" [selectedRowId]="selectedRowPromId"></app-promotion-codes>
-<app-promotion-items *ngIf="displayGrid" [selectedRowId]="selectedRowPromId"></app-promotion-items>
+<hr>
+<app-promotion-codes *ngIf="displayCodeGrid" [selectedPromoId]="selectedRowPromId" [selectedPromoDesc]="selectedRowPromDesc"
+                      [selectedPromotionDetails]="selectedPromotion" (setShowCodeGridsOrNot)="setCodeGridsShoworHide($event)">
+</app-promotion-codes>
+<hr>
+<app-promotion-items *ngIf="displayItemGrid" [selectedPromoId]="selectedRowPromId" [selectedPromoDesc]="selectedRowPromDesc" (setShowItemGridsOrNot)="setItemGridsShoworHide($event)"></app-promotion-items>

@@ -1,7 +1,7 @@
 .grid-style{
   height: 125px;
   table-layout: fixed;
-  overflow-y: auto ;
+  overflow-y: auto;
 }
 .container{
   margin-top: 10px;
@@ -31,7 +31,7 @@ td{
   text-align: left;
 }
 .table tr.active td {                  /* for selected row */
-  background-color:dodgerblue !important;
+  background-color:#0088cc !important;
   color: white;
 }
 button{
@@ -56,4 +56,8 @@ button{
 .display-style{
   text-align: center;
   color: orangered;
+  padding-bottom: 20px;
+}
+hr{
+  margin-top: 0px;
 }

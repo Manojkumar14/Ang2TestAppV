@@ -52,4 +52,5 @@ button{
 .display-style{
   text-align: center;
   color: orangered;
+  margin-bottom: 10px !important;
 }

@@ -11,13 +11,13 @@ export class PromosCodesItemMaintenanceComponent implements OnInit {
 
   promotionForm: FormGroup;
   promotion: any = {};
-  vpCustomersData: any = [];
-  PromotionData: any[];
-  promotionDataArray: any = [];
-  promotionDataArrayCopy: any[];
-  promotionFieldsArray: any = [];
+  vpCustomersData: any[];
+  promotionDataArray: any[];
+  promotionFieldsArray: any[];
   showPanel: any = false;
   hidePanel: any = true;
+  showCodePanel: any;
+  showItempanel: any;
   varReadOnly: any = false;
   displaySaveBtn: any = true;
   displayUpdateBtn: any = false;
@@ -27,13 +27,16 @@ export class PromosCodesItemMaintenanceComponent implements OnInit {
   errorMsg = '';
   displayGrid = false;
   displayLabel = false;
+  displayCodeGrid = true;
+  displayItemGrid = true;
   selectedRowPromId: any;
+  selectedRowPromDesc: any;
+  selectedPromotion: any = {};
   search: any = {
     'fieldValue': 'promId',
     'textValue': '',
     'radioValue': ''
   };
-  data: any = [];
   offsetIndex: any = 0;
   recordsPerPageIndex: any = 0;
   totalRecords: any = 0;
@@ -43,14 +46,48 @@ export class PromosCodesItemMaintenanceComponent implements OnInit {
 
   ngOnInit() {
     this.getPromotionFields();
-    this.vpc = 89985;
-    this.displayGrid = true;
     this.getPromotionDetails(0);
     this.getVpCustomersDetails();
+    this.vpc = 89985;
+    this.displayGrid = true;
     this.selectedRowPromId = 1;
+    this.selectedRowPromDesc = 'Februcherry';
+    this.selectedPromotion = this.promotionDataArray[0];
   }
   setClickedRow(index, data) {
     this.selectedRowPromId = data.promId;
+    this.selectedRowPromDesc = data.promDesc;
+    this.selectedPromotion = data;
+  }
+  setCodeGridsShoworHide(Codestatus) {
+    if (Codestatus) {
+      this.showPanel = false;
+      this.hidePanel = true;
+      this.displayItemGrid = true;
+      this.displayCodeGrid = true;
+      this.getPromotionDetails(0);
+    }else {
+      this.showPanel = false;
+      this.hidePanel = false;
+      this.displayItemGrid = false;
+      this.displayCodeGrid = true;
+      this.getPromotionDetails(0);
+    }
+  }
+  setItemGridsShoworHide(Itemstatus) {
+    if (Itemstatus) {
+      this.showPanel = false;
+      this.hidePanel = true;
+      this.displayItemGrid = true;
+      this.displayCodeGrid = true;
+      this.getPromotionDetails(0);
+    }else {
+      this.showPanel = false;
+      this.hidePanel = false;
+      this.displayItemGrid = true;
+      this.displayCodeGrid = false;
+      this.getPromotionDetails(0);
+    }
   }
   getVpCustomersDetails() {
     let errMessage: any = [];
@@ -72,31 +109,31 @@ export class PromosCodesItemMaintenanceComponent implements OnInit {
           errorMsg => errMessage = <any>errorMsg
         );
   }
-  getPromotionDetails(offset?, promotionSearch?) {
-    this.data = [];
+  // getPromotionDetails(0);
+  getPromotionDetails = function (offset?, promotionSearch?) {
     this.promotionDataArray = [];
-    this.promotionDataArrayCopy = [];
+    promotionSearch = this.search;
     if (this.search.textValue) {
-      promotionSearch = this.search;
       if (offset === undefined) {
         offset = 0;
       }
     }
     if (this.search.radioValue === 'active') {
       this.search.radioValue = true;
+    }else {
+      this.search.radioValue = false;
     }
     let errMessage: any = [];
     this.promosCodesItemsService.getPromotionData(offset, promotionSearch)
                         .subscribe(
                           (promotionData) => {
-                            this.data.push(promotionData[0]);
-                            this.promotionDataArray = this.data[0];
-                            this.promotionDataArrayCopy = this.data[0];
+                            this.promotionDataArray = promotionData[0];
                             this.offsetIndex = promotionData[1];
                             this.recordsPerPageIndex = promotionData[2];
                             this.totalRecords = promotionData[3];
                             this.totalPages = promotionData[4];
-                            if (this.promotionDataArrayCopy.length !== 0) {
+                            // this.selectedPromotion = this.promotionDataArrayCopy[0];
+                            if (this.promotionDataArray.length !== 0) {
                               this.displayGrid = true;
                               this.displayLabel = false;
                             }else {
@@ -106,11 +143,12 @@ export class PromosCodesItemMaintenanceComponent implements OnInit {
                           },
                           errorMsg => errMessage = <any>errorMsg
                         );
-  }
+  };
   addNewPromotion() {
     this.showPanel = true;
     this.hidePanel = false;
-    this.displayGrid = this.hidePanel;
+    this.displayCodeGrid = false;
+    this.displayItemGrid = false;
     this.displaySaveBtn = true;
     this.displayUpdateBtn = false;
     this.promotionTitle = 'Add New Promotion';
@@ -120,7 +158,8 @@ export class PromosCodesItemMaintenanceComponent implements OnInit {
   onCancel() {
     this.showPanel = false;
     this.hidePanel = true;
-    this.displayGrid = this.hidePanel;
+    this.displayCodeGrid = true;
+    this.displayItemGrid = true;
     this.getPromotionDetails(0);
   }
   onChange(editData) {
@@ -128,7 +167,8 @@ export class PromosCodesItemMaintenanceComponent implements OnInit {
     this.promotion = {};
     this.showPanel = true;
     this.hidePanel = false;
-    this.displayGrid = this.hidePanel;
+    this.displayCodeGrid = false;
+    this.displayItemGrid = false;
     this.varReadOnly = true;
     this.displaySaveBtn = false;
     this.displayUpdateBtn = true;
@@ -159,7 +199,8 @@ export class PromosCodesItemMaintenanceComponent implements OnInit {
                           (savedPromotionDetails) => {
                             this.showPanel = false;
                             this.hidePanel = true;
-                            this.displayGrid = this.hidePanel;
+                            this.displayCodeGrid = true;
+                            this.displayItemGrid = true;
                             this.getPromotionDetails();
                           },
                           errorMsg => errMessage = <any>errorMsg
@@ -183,7 +224,8 @@ export class PromosCodesItemMaintenanceComponent implements OnInit {
                           (updatedLocationDetails) => {
                             this.showPanel = false;
                             this.hidePanel = true;
-                            this.displayGrid = this.hidePanel;
+                            this.displayCodeGrid = true;
+                            this.displayItemGrid = true;
                             this.getPromotionDetails();
                           },
                           errorMsg => errMessage = <any>errorMsg

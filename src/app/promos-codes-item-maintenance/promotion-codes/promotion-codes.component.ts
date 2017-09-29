@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input } from '@angular/core';
+import { Component, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormGroupName, FormControl, FormControlName, Validators, NgForm } from '@angular/forms';
 import { PromosCodesItemsService } from 'app/services/promos-codes-items.service';
 @Component({
@@ -7,7 +7,11 @@ import { PromosCodesItemsService } from 'app/services/promos-codes-items.service
   styleUrls: ['./promotion-codes.component.css']
 })
 export class PromotionCodesComponent implements OnChanges {
-  @Input() selectedRowId;
+  @Input() selectedPromoId;
+  @Input() selectedPromoDesc;
+  @Input() selectedPromotionDetails;
+
+  @Output() setShowCodeGridsOrNot: EventEmitter<any> = new EventEmitter();
 
   promotionCodeForm: FormGroup;
   promotionCodeTitle: any = 'Add/Change promotion code';
@@ -32,9 +36,10 @@ export class PromotionCodesComponent implements OnChanges {
   constructor(private promosCodesItemsService: PromosCodesItemsService) { }
 
   ngOnChanges(changes: any): void {
-    if (changes.selectedRowId) {
-      this.getPromotionCodesFields(this.selectedRowId);
-      this.getPromotionCodesDetails(0, this.selectedRowId);
+    if (changes.selectedPromoId) {
+      console.log(this.selectedPromotionDetails);
+      this.getPromotionCodesFields(this.selectedPromoId);
+      this.getPromotionCodesDetails(0, this.selectedPromoId);
     }
   }
   getPromotionCodesFields(id) {
@@ -72,6 +77,35 @@ export class PromotionCodesComponent implements OnChanges {
                           },
                           errorMsg => errMessage = <any>errorMsg
                         );
+  }
+  addNewPromotionCode() {
+    this.showPanel = true;
+    this.hidePanel = false;
+    this.displaySaveBtn = true;
+    this.displayUpdateBtn = false;
+    this.promotionCodeTitle = 'Add New Promotion Code';
+    this.setShowCodeGridsOrNot.emit(false);
+  }
+  onCancel() {
+    this.showPanel = false;
+    this.hidePanel = true;
+    this.displayGrid = this.hidePanel;
+    this.getPromotionCodesDetails(0, this.selectedPromoId);
+    this.setShowCodeGridsOrNot.emit(true);
+  }
+  onChange(editData) {
+    console.log(editData);
+    this.promotionCode = {};
+    this.showPanel = true;
+    this.hidePanel = false;
+    this.varReadOnly = true;
+    this.displaySaveBtn = false;
+    this.displayUpdateBtn = true;
+    this.promotionCodeTitle = 'Change Promotion Code';
+    this.setShowCodeGridsOrNot.emit(false);
+  }
+  savePromotionCode(formData) {
+    console.log(formData);
   }
 
 }
