@@ -109,7 +109,6 @@ export class PromosCodesItemMaintenanceComponent implements OnInit {
           errorMsg => errMessage = <any>errorMsg
         );
   }
-  // getPromotionDetails(0);
   getPromotionDetails = function (offset?, promotionSearch?) {
     this.promotionDataArray = [];
     promotionSearch = this.search;
@@ -132,7 +131,6 @@ export class PromosCodesItemMaintenanceComponent implements OnInit {
                             this.recordsPerPageIndex = promotionData[2];
                             this.totalRecords = promotionData[3];
                             this.totalPages = promotionData[4];
-                            // this.selectedPromotion = this.promotionDataArrayCopy[0];
                             if (this.promotionDataArray.length !== 0) {
                               this.displayGrid = true;
                               this.displayLabel = false;
@@ -163,7 +161,6 @@ export class PromosCodesItemMaintenanceComponent implements OnInit {
     this.getPromotionDetails(0);
   }
   onChange(editData) {
-    console.log(editData);
     this.promotion = {};
     this.showPanel = true;
     this.hidePanel = false;

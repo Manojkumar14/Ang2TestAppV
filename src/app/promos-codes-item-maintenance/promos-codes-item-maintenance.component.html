@@ -121,4 +121,6 @@
                       [selectedPromotionDetails]="selectedPromotion" (setShowCodeGridsOrNot)="setCodeGridsShoworHide($event)">
 </app-promotion-codes>
 <hr>
-<app-promotion-items *ngIf="displayItemGrid" [selectedPromoId]="selectedRowPromId" [selectedPromoDesc]="selectedRowPromDesc" (setShowItemGridsOrNot)="setItemGridsShoworHide($event)"></app-promotion-items>
+<app-promotion-items *ngIf="displayItemGrid" [selectedPromoId]="selectedRowPromId" [selectedPromoDesc]="selectedRowPromDesc"
+                      (setShowItemGridsOrNot)="setItemGridsShoworHide($event)">
+</app-promotion-items>

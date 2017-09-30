@@ -1,6 +1,7 @@
 import { Component, OnChanges, Input, Output, EventEmitter  } from '@angular/core';
 import { FormGroup, FormGroupName, FormControl, FormControlName, Validators, NgForm } from '@angular/forms';
 import { PromosCodesItemsService } from 'app/services/promos-codes-items.service';
+import { GlobalSearchService } from 'app/services/global-search.service';
 
 @Component({
   selector: 'app-promotion-items',
@@ -19,6 +20,7 @@ export class PromotionItemsComponent implements OnChanges {
   promotionItemFieldsArray: any;
   promotionItemDataArray: any = [];
   promotionItemDataArrayCopy: any[];
+  itemsList: any[];
   showPanel: any = false;
   hidePanel: any = true;
   varReadOnly: any = false;
@@ -33,7 +35,7 @@ export class PromotionItemsComponent implements OnChanges {
   totalRecords: any = 0;
   totalPages: any = 0;
 
-  constructor(private promosCodesItemsService: PromosCodesItemsService) { }
+  constructor(private promosCodesItemsService: PromosCodesItemsService, private globalSearchService: GlobalSearchService) { }
 
   ngOnChanges(changes: any): void {
     if (changes.selectedPromoId) {
@@ -41,7 +43,16 @@ export class PromotionItemsComponent implements OnChanges {
       this.getPromotionItemsDetails(0, this.selectedPromoId);
     }
   }
-
+  // getItemList() {
+  //   let errMessage: any = [];
+  //   this.globalSearchService.getGlobalSearchData()
+  //       .subscribe(
+  //         (items) => {
+  //           this.itemsList = items;
+  //         },
+  //         errorMsg => errMessage = <any>errorMsg
+  //       );
+  // }
     getPromotionItemsFields(id) {
       let errMessage: any = [];
       this.promosCodesItemsService.getPromotionItemOptions(id)

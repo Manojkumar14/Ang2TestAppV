@@ -90,6 +90,7 @@ export class PromotionCodesComponent implements OnChanges {
     this.showPanel = false;
     this.hidePanel = true;
     this.displayGrid = this.hidePanel;
+    this.promotionCode = {};
     this.getPromotionCodesDetails(0, this.selectedPromoId);
     this.setShowCodeGridsOrNot.emit(true);
   }
@@ -103,9 +104,55 @@ export class PromotionCodesComponent implements OnChanges {
     this.displayUpdateBtn = true;
     this.promotionCodeTitle = 'Change Promotion Code';
     this.setShowCodeGridsOrNot.emit(false);
+    this.promotionCode = editData;
+    this.promotionCode.startDate = editData.startDate.substring(0, 10);
+    this.promotionCode.endDate = editData.endDate.substring(0, 10);
   }
   savePromotionCode(formData) {
+    let errMessage: any = [];
+    // const datePattern: any = '00:00:00';
+    if (this.selectedPromotionDetails) {
+      formData.vpcId = this.selectedPromotionDetails.vpcId;
+      formData.vpcCode = this.selectedPromotionDetails.vpcCode;
+    }else {
+      formData.vpcId = 130;
+      formData.vpcCode = 'FFS';
+    }
+    if (!formData.active) {
+      formData.active = false;
+    }
+    if (!formData.allowOverpayment) {
+      formData.allowOverpayment = false;
+    }
+    formData.promId = this.selectedPromoId;
+    // formData.startDate = new Date(formData.startDate);
+    // formData.endDate = new Date(formData.endDate);
     console.log(formData);
+    this.promosCodesItemsService.addPromotionCodeData(this.selectedPromoId, formData)
+                                .subscribe(
+                                  (savedPromotionCodeDetails) => {
+                                    this.showPanel = false;
+                                    this.hidePanel = true;
+                                    this.promotionCode = {};
+                                    this.setShowCodeGridsOrNot.emit(true);
+                                    this.getPromotionCodesDetails(0, this.selectedPromoId);
+                                  },
+                                  errorMsg => errMessage = <any>errorMsg
+                                );
+  }
+  updatePromotionCode(formData) {
+    let errMessage: any = [];
+    this.promosCodesItemsService.updatePromotionCodeData(this.selectedPromoId, formData.promotionCodeId, formData)
+                        .subscribe(
+                          (updatedPromotionCodeDetails) => {
+                            this.showPanel = false;
+                            this.hidePanel = true;
+                            this.promotionCode = {};
+                            this.setShowCodeGridsOrNot.emit(true);
+                            this.getPromotionCodesDetails(0, this.selectedPromoId);
+                          },
+                          errorMsg => errMessage = <any>errorMsg
+                        );
   }
 
 }
